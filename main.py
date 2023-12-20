@@ -1,19 +1,13 @@
-# Credit me you silly 
-
 import os
-try:
-    import requests
-except ImportError:
-    os.system("pip install requests")
-import time
 import requests
-from concurrent.futures import ThreadPoolExecutor
+import time
 import uuid
 import random
-
+import threading
 
 url = "https://api.discord.gx.games/v1/direct-fulfillment"
-num_urls = int(input('Star https://github.com/TheCuteOwl/Discord-Promo-Generator for making this script (If you skid, give credit ;)\nHow many nitro you want to generate :' ))
+num_urls = int(input('Star https://github.com/TheCuteOwl/Discord-Promo-Generator for making this script (If you skid, give credit ;)\nHow many nitros do you want to generate: '))
+
 use_multiprocessing = input('Do you want to use multiprocessing? (yes/no): ').lower()
 while use_multiprocessing not in ['yes', 'no']:
     use_multiprocessing = input('Error! Do you want to use multiprocessing? (yes/no): ').lower()
@@ -21,7 +15,6 @@ while use_multiprocessing not in ['yes', 'no']:
 use_proxies = input('Do you want to use proxies? (yes/no): ').lower()
 while use_proxies not in ['yes', 'no']:
     use_proxies = input('Error! Do you want to use proxies? (yes/no): ').lower()
-
 
 headers = {
     "Content-Type": "application/json",
@@ -45,22 +38,20 @@ def read_proxies():
             return file.read().splitlines()
     except:
         with open("proxies.txt", "w") as file:
-            return file.read().splitlines()
+            return []
+
+def write_proxies(proxies):
+    with open("proxies.txt", "w") as file:
+        for proxy in proxies:
+            file.write(f"{proxy}\n")
 
 proxies = read_proxies() if use_proxies == 'yes' else [None] * num_urls
 
-start_time = time.time()
-
-def generate_url(index):
+def generate_url(proxy):
     try:
         partner_user_id = str(uuid.uuid4())
-
-        # Select a random proxy from the list (if proxies are provided)
-        proxy = random.choice(proxies) if use_proxies == 'yes' else None
-
         response = requests.post(url, json={"partnerUserId": partner_user_id}, headers=headers, proxies={"http": proxy, "https": proxy})
         response.raise_for_status()
-
         data = response.json()
         token = data["token"]
 
@@ -78,23 +69,30 @@ def generate_url(index):
     except requests.RequestException as e:
         print(f"Error generating URL: {e}")
 
-        if use_proxies == 'yes' and proxy is not None and isinstance(e, requests.exceptions.ProxyError) and "WinError 10061" or "Cannot connect to proxy." or "TLS/SSL connection has been closed (EOF)" in str(e):
+        if use_proxies == 'yes' and proxy is not None and isinstance(e, requests.exceptions.ProxyError) and ("WinError 10061" in str(e) or "Cannot connect to proxy." in str(e) or "TLS/SSL connection has been closed (EOF)" in str(e) or "[SSL: UNEXPECTED_EOF_WHILE_READING]" in str(e)):
             proxies.remove(proxy)
             print(f"Proxy {proxy} removed from the list.")
+            write_proxies(proxies)
 
-if use_multiprocessing == 'yes':
-    with ThreadPoolExecutor() as executor:
-        executor.map(generate_url, range(num_urls))
-else:
-    for i in range(num_urls):
-        generate_url(i)
+def main():
+    num_threads = int(input(f"Enter Number Of Threads: "))
 
-if use_multiprocessing == 'yes':
-    with ThreadPoolExecutor() as executor:
-        executor.map(generate_url, range(num_urls))
-else:
-    for i in range(num_urls):
-        generate_url(i)
+    threads = []
+    for i in range(num_threads):
+        proxy = random.choice(proxies) if proxies else None
+        thread = threading.Thread(target=generate_url, args=(proxy,))
+        threads.append(thread)
+
+    for thread in threads:
+        thread.start()
+
+    try:
+        for thread in threads:
+            thread.join()
+    except KeyboardInterrupt:
+        print("Script terminated by user.")
+
+main()
 end_time = time.time()
 
 elapsed_time = end_time - start_time
