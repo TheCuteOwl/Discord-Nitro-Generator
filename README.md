@@ -5,6 +5,8 @@
 
 Generate Discord Nitro URLs with this Python script using the `requests` library and `ThreadPoolExecutor`. Star this project if you want to support me!
 
+All generated codes are valid!
+
 ## Overview
 
 This script automates the generation of Discord Nitro URLs by making requests to the Discord OperaGX Nitro API. It's a simple and efficient way to create multiple Nitro URLs quickly.
