@@ -44,7 +44,7 @@ def generate_url(index):
             pass
     urls = 'https://discord.com/billing/partner-promotions/1180231712274387115/'
     with open(output_file_path, "a") as file:
-        file.write(f"{urls}/{token}\n")
+        file.write(f"{urls}{token}\n")
     
     print(f"URL generated and saved to {output_file_path}")
 
