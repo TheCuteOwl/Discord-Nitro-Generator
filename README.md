@@ -5,6 +5,8 @@
 
 Generate Discord Nitro URLs with this Python script using the `requests` library and `ThreadPoolExecutor`. Star this project if you want to support me!
 
+Any Questions ? join our Discord server: [Discord Support](https://discord.gg/SKGjXfmFga)
+
 All generated codes are valid!
 
 ## Overview
