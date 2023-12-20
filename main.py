@@ -1,19 +1,20 @@
+# Credit me you silly 
+
 import os
 try:
     import requests
 except ImportError:
     os.system("pip install requests")
-
 import time
 import requests
 from concurrent.futures import ThreadPoolExecutor
+import uuid
 
 url = "https://api.discord.gx.games/v1/direct-fulfillment"
-num_urls = int(input('Star https://github.com/TheCuteOwl/Discord-Promo-Generator for making this script (If you skid, give credit ;)\nHow many nitro you want to generate'))  
+num_urls = int(input('Star https://github.com/TheCuteOwl/Discord-Promo-Generator for making this script (If you skid, give credit ;)\nHow many nitro you want to generate :' ))
 use_multiprocessing = input('Do you want to use multiprocessing? (yes/no): ').lower()
 while use_multiprocessing not in ['yes', 'no']:
     use_multiprocessing = input('Error! Do you want to use multiprocessing? (yes/no): ').lower()
-
 
 headers = {
     "Content-Type": "application/json",
@@ -32,7 +33,8 @@ headers = {
 start_time = time.time()
 
 def generate_url(index):
-    response = requests.post(url, json={"partnerUserId": "TheCuteOwl:3"}, headers=headers).json()
+    partner_user_id = str(uuid.uuid4())
+    response = requests.post(url, json={"partnerUserId": partner_user_id}, headers=headers).json()
     token = response["token"]
     
     output_file_path = f"output.txt"
