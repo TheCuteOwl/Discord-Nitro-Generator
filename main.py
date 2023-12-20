@@ -1,10 +1,11 @@
+# Don't skid silly
+
 import os
 import requests
 import time
 import uuid
 import random
 import threading
-
 url = "https://api.discord.gx.games/v1/direct-fulfillment"
 num_urls = int(input('Star https://github.com/TheCuteOwl/Discord-Promo-Generator for making this script (If you skid, give credit ;)\nHow many nitros do you want to generate: '))
 
@@ -47,51 +48,64 @@ def write_proxies(proxies):
 
 proxies = read_proxies() if use_proxies == 'yes' else [None] * num_urls
 
+success_count = 0
+lock = threading.Lock()
+
 def generate_url(proxy):
-    try:
-        partner_user_id = str(uuid.uuid4())
-        response = requests.post(url, json={"partnerUserId": partner_user_id}, headers=headers, proxies={"http": proxy, "https": proxy})
-        response.raise_for_status()
-        data = response.json()
-        token = data["token"]
+    global success_count
+    while success_count < num_urls:
+        
+        try:
+            partner_user_id = str(uuid.uuid4())
+            response = requests.post(url, json={"partnerUserId": partner_user_id}, headers=headers, proxies={"http": proxy, "https": proxy}, timeout=5)
+            response.raise_for_status()
+            data = response.json()
+            token = data["token"]
 
-        output_file_path = "output.txt"
+            output_file_path = "output.txt"
 
-        if not os.path.exists(output_file_path):
-            with open(output_file_path, "w"):
-                pass
+            if not os.path.exists(output_file_path):
+                with open(output_file_path, "w"):
+                    pass
 
-        urls = 'https://discord.com/billing/partner-promotions/1180231712274387115/'
-        with open(output_file_path, "a") as file:
-            file.write(f"{urls}{token}\n")
+            urls = 'https://discord.com/billing/partner-promotions/1180231712274387115/'
+            with open(output_file_path, "a") as file:
+                file.write(f"{urls}{token}\n")
+                success_count += 1
+            print(f"URL generated and saved to {output_file_path}")
+        except requests.RequestException as e:
+            print(f"Error generating URL: {e}")
 
-        print(f"URL generated and saved to {output_file_path}")
-    except requests.RequestException as e:
-        print(f"Error generating URL: {e}")
-
-        if use_proxies == 'yes' and proxy is not None and isinstance(e, requests.exceptions.ProxyError) and ("WinError 10061" in str(e) or "Cannot connect to proxy." in str(e) or "TLS/SSL connection has been closed (EOF)" in str(e) or "[SSL: UNEXPECTED_EOF_WHILE_READING]" in str(e)):
-            proxies.remove(proxy)
-            print(f"Proxy {proxy} removed from the list.")
-            write_proxies(proxies)
+            if use_proxies == 'yes' and proxy is not None:
+                if proxy in proxies:
+                    proxies.remove(proxy)
+                    print(f"Proxy {proxy} removed from the list.")
+                    write_proxies(proxies)
+                else:
+                    pass
 
 def main():
-    num_threads = int(input(f"Enter Number Of Threads: "))
+    global success_count
+    if use_proxies == 'no':
+        while success_count < num_urls:
+            generate_url(None)
+    else:
+        num_threads = int(input(f"Enter Number Of Threads: "))
 
-    threads = []
-    for i in range(num_threads):
-        proxy = random.choice(proxies) if proxies else None
-        thread = threading.Thread(target=generate_url, args=(proxy,))
-        threads.append(thread)
+        threads = []
+        for i in range(num_threads):
+            proxy = random.choice(proxies) if proxies else None
+            thread = threading.Thread(target=generate_url, args=(proxy,))
+            threads.append(thread)
 
-    for thread in threads:
-        thread.start()
-
-    try:
         for thread in threads:
-            thread.join()
-    except KeyboardInterrupt:
-        print("Script terminated by user.")
+            thread.start()
 
+        try:
+            for thread in threads:
+                thread.join()
+        except KeyboardInterrupt:
+            print("Script terminated by user.")
 main()
 end_time = time.time()
 
