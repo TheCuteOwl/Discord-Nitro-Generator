@@ -6,6 +6,9 @@ import time
 import uuid
 import random
 import threading
+import subprocess
+from ctypes import windll
+
 url = "https://api.discord.gx.games/v1/direct-fulfillment"
 num_urls = int(input('Star https://github.com/TheCuteOwl/Discord-Promo-Generator for making this script (If you skid, give credit ;)\nHow many nitros do you want to generate: '))
 
@@ -73,17 +76,26 @@ def generate_url(proxy):
                 file.write(f"{urls}{token}\n")
                 success_count += 1
             print(f"URL generated and saved to {output_file_path}")
+            update_window_title(success_count, len(proxies))
         except requests.RequestException as e:
             print(f"Error generating URL: {e}")
 
-            if use_proxies == 'yes' and proxy is not None:
-                if proxy in proxies:
-                    proxies.remove(proxy)
-                    print(f"Proxy {proxy} removed from the list.")
+            if use_proxies == 'yes' and proxy is not None and isinstance(e, requests.exceptions.ProxyError) and ("WinError 10061" in str(e) or "Cannot connect to proxy." in str(e) or "TLS/SSL connection has been closed (EOF)" in str(e) or "[SSL: UNEXPECTED_EOF_WHILE_READING]" in str(e) or "Max retries exceeded with url" in str(e)) or "timed out." in str(e) or "Connection aborted" in str(e):
+                proxies.remove(proxy)
+                print(f"Proxy {proxy} removed from the list.")
+                try:
                     write_proxies(proxies)
-                else:
+                except:
                     pass
+                update_window_title(success_count, len(proxies))
 
+def update_window_title(success_count, num_threads):
+    window_title = f"URLs Generated: {success_count} | Threads Launched: {num_threads}"
+    if os.name == 'posix': 
+        subprocess.run(["printf", f"\033]0;{window_title}\007"])
+    elif os.name == 'nt': 
+        windll.kernel32.SetConsoleTitleW(window_title)
+        
 def main():
     global success_count
     if use_proxies == 'no':
