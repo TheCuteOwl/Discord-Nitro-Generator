@@ -40,8 +40,12 @@ headers = {
 start_time = time.time()
 
 def read_proxies():
-    with open("proxies.txt", "r") as file:
-        return file.read().splitlines()
+    try:
+        with open("proxies.txt", "r") as file:
+            return file.read().splitlines()
+    except:
+        with open("proxies.txt", "w") as file:
+            return file.read().splitlines()
 
 proxies = read_proxies() if use_proxies == 'yes' else [None] * num_urls
 
@@ -51,6 +55,7 @@ def generate_url(index):
     try:
         partner_user_id = str(uuid.uuid4())
 
+        # Select a random proxy from the list (if proxies are provided)
         proxy = random.choice(proxies) if use_proxies == 'yes' else None
 
         response = requests.post(url, json={"partnerUserId": partner_user_id}, headers=headers, proxies={"http": proxy, "https": proxy})
