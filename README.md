@@ -3,7 +3,7 @@
 ![GitHub forks](https://img.shields.io/github/forks/TheCuteOwl/Discord-Promo-Generator?style=flat-square)
 ![GitHub license](https://img.shields.io/github/license/TheCuteOwl/Discord-Promo-Generator?style=flat-square)
 
-Generate Discord Nitro URLs with this Python script using the `requests` library and `Threading`. Star this project if you want to support me!
+Generate Discord Nitro URLs with this Python script using the `requests` and `Threading` libraries. Star this project if you want to support me!
 
 Any Questions ? join our Discord server: [Discord Support](https://discord.gg/SKGjXfmFga)
 
