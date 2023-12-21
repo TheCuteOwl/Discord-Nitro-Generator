@@ -1,8 +1,7 @@
-# Don't skid u silly
-
 import requests
 import threading
 import re
+import os
 
 proxy_list_urls = [
     "https://api.proxyscrape.com/v2/?request=getproxies&protocol=http&timeout=10000&country=all&ssl=all&anonymity=all",
@@ -20,7 +19,7 @@ def get_proxies(url, timeout=5):
         response.raise_for_status()
 
         proxies = response.text.splitlines()
-        
+
         return proxies
     except requests.exceptions.RequestException as e:
         print(f"An error occurred: {e}")
@@ -47,13 +46,22 @@ def main(timeout=5):
     for thread in threads:
         thread.join()
 
-    with open("http.txt", "w", encoding="utf-8") as file:
+    filename = "http.txt"
+    if not os.path.exists(filename):
+        print(f"The file {filename} does not exist. Creating it.")
+        open(filename, 'w').close()
+
+    with open(filename, "w", encoding="utf-8") as file:
         for proxy in all_proxies:
             file.write(proxy + "\n")
 
     print(f"Total proxies saved: {len(all_proxies)}")
 
 def remove_invalid_proxies(filename):
+    if not os.path.exists(filename):
+        print(f"The file {filename} does not exist. Creating it.")
+        open(filename, 'w').close()
+
     with open(filename, "r", encoding="utf-8") as file:
         proxies = file.read().splitlines()
 
@@ -92,7 +100,7 @@ def check_proxy(proxy, working_proxies, unchecked_proxies, file_lock):
 def clear_file(filename):
     with open(filename, "w"):
         pass
-    
+
 def remove_duplicates(filename):
     with open(filename, "r", encoding="utf-8") as file:
         lines = file.read().splitlines()
@@ -106,6 +114,10 @@ def remove_duplicates(filename):
                 file.write(line + "\n")
 
 def check_proxies_from_file(filename):
+    if not os.path.exists(filename):
+        print(f"The file {filename} does not exist. Creating it.")
+        open(filename, 'w').close()
+
     with open(filename, "r", encoding="utf-8") as file:
         proxies = file.read().splitlines()
 
