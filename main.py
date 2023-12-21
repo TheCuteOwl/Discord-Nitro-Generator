@@ -1,5 +1,3 @@
-# Don't skid silly
-
 import os
 import requests
 import time
@@ -8,6 +6,8 @@ import random
 import threading
 import subprocess
 from ctypes import windll
+import signal
+from statistics import mean
 
 url = "https://api.discord.gx.games/v1/direct-fulfillment"
 num_urls = int(input('Star https://github.com/TheCuteOwl/Discord-Promo-Generator for making this script (If you skid, give credit ;)\nHow many nitros do you want to generate: '))
@@ -52,12 +52,16 @@ def write_proxies(proxies):
 proxies = read_proxies() if use_proxies == 'yes' else [None] * num_urls
 
 success_count = 0
+success_per_second = []
 lock = threading.Lock()
 
 def generate_url(proxy):
     global success_count
+    global success_per_second
+
     while success_count < num_urls:
-        
+        start_request_time = time.time()
+
         try:
             partner_user_id = str(uuid.uuid4())
             response = requests.post(url, json={"partnerUserId": partner_user_id}, headers=headers, proxies={"http": proxy, "https": proxy}, timeout=5)
@@ -75,29 +79,40 @@ def generate_url(proxy):
             with open(output_file_path, "a") as file:
                 file.write(f"{urls}{token}\n")
                 success_count += 1
-            print(f"URL generated and saved to {output_file_path}")
-            update_window_title(success_count, len(proxies))
+                print(f"URL generated and saved to {output_file_path}")
+                update_window_title(success_count, len(proxies), success_per_second)
         except requests.RequestException as e:
             print(f"Error generating URL: {e}")
 
-            if use_proxies == 'yes' and proxy is not None and isinstance(e, requests.exceptions.ProxyError) and ("WinError 10061" in str(e) or "Cannot connect to proxy." in str(e) or "TLS/SSL connection has been closed (EOF)" in str(e) or "[SSL: UNEXPECTED_EOF_WHILE_READING]" in str(e) or "Max retries exceeded with url" in str(e)) or "timed out." in str(e) or "Connection aborted" in str(e):
+            if use_proxies == 'yes' and proxy is not None and isinstance(e, requests.exceptions.ProxyError) and ("WinError 10061" in str(e) or "Cannot connect to proxy." in str(e) or "TLS/SSL connection has been closed (EOF)" in str(e) or "[SSL: UNEXPECTED_EOF_WHILE_READING]" in str(e) or "Max retries exceeded with url" in str(e)) or "timed out." in str(e) or "Connection aborted" in str(e) or "Too many requests" in str(e) or "EOF occurred in violation of protocol" in str(e) or "429" in str(e):
                 proxies.remove(proxy)
                 print(f"Proxy {proxy} removed from the list.")
                 try:
                     write_proxies(proxies)
                 except:
                     pass
-                update_window_title(success_count, len(proxies))
+                update_window_title(success_count, len(proxies), success_per_second)
 
-def update_window_title(success_count, num_threads):
-    window_title = f"URLs Generated: {success_count} | Threads Launched: {num_threads}"
+        end_request_time = time.time()
+        request_time = end_request_time - start_request_time
+
+        if request_time > 0:
+            with lock:
+                success_per_second.append(1 / request_time)
+
+def update_window_title(success_count, num_threads, success_per_second):
+    average_success_per_second = mean(success_per_second) if success_per_second else 0
+    window_title = f"URLs Generated: {success_count} | Threads Launched: {num_threads} | Avg URLs/sec: {average_success_per_second:.2f}"
+    
     if os.name == 'posix': 
         subprocess.run(["printf", f"\033]0;{window_title}\007"])
     elif os.name == 'nt': 
         windll.kernel32.SetConsoleTitleW(window_title)
-        
+
 def main():
     global success_count
+    global success_per_second
+
     if use_proxies == 'no':
         while success_count < num_urls:
             generate_url(None)
@@ -118,9 +133,11 @@ def main():
                 thread.join()
         except KeyboardInterrupt:
             print("Script terminated by user.")
-main()
-end_time = time.time()
+        
+    end_time = time.time()
 
-elapsed_time = end_time - start_time
-print(f"All URLs generated and saved! Star https://github.com/TheCuteOwl/Discord-Promo-Generator for making this script")
-print(f"Time taken: {elapsed_time:.2f} seconds")
+    elapsed_time = end_time - start_time
+    print(f"All URLs generated and saved! Star https://github.com/TheCuteOwl/Discord-Promo-Generator for making this script")
+    input(f"Time taken: {elapsed_time:.2f} seconds")
+
+main()
