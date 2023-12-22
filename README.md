@@ -10,8 +10,9 @@ Any Questions ? join our Discord server: [Discord Support](https://discord.gg/SK
 
 ## Overview
 
-This script automates the generation of Discord Nitro URLs by making requests to the Discord OperaGX Nitro API. It's a simple and efficient way to create multiple Nitro URLs quickly.
- 
+This script automates the generation of Discord Nitro URLs by making requests to the Discord OperaGX Nitro API. It's a simple and efficient way to create multiple Nitro URLs quickly. 
+
+## HTTP/S PROXY SUPPORT! + proxy scrapper and checker
 ## Usage
 
 1. **Clone the repository:**
