@@ -143,6 +143,7 @@ def main():
         end_time = time.time()
         elapsed_time = end_time - start_time
         print(f"All URLs generated and saved! Star https://github.com/TheCuteOwl/Discord-Promo-Generator for making this script")
+        
         input(f"Time taken: {elapsed_time:.2f} seconds")
 
 main()
