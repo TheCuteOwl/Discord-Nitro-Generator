@@ -16,8 +16,8 @@ This script automates the generation of Discord Nitro URLs by making requests to
  
 1. **Clone the repository:**
    ```bash        
-   git clone https://github.com/TheCuteOwl/Discord-Promo-Generator.git
-   cd Discord-Promo-Generator-main
+   git clone https://github.com/TheCuteOwl/Discord-Promo-Nitro-Generator.git
+   cd Discord-Promo-Nitro-Generator-main
    ```
 
 2. **Install dependencies:**
