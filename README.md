@@ -7,7 +7,6 @@ Generate Discord Nitro URLs with this Python script using the `requests` and `Th
 
 Any Questions ? join our Discord server: [Discord Support](https://discord.gg/SKGjXfmFga)
 
-
 ## Overview
 
 This script automates the generation of Discord Nitro URLs by making requests to the Discord OperaGX Nitro API. It's a simple and efficient way to create multiple Nitro URLs quickly. 
