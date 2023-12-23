@@ -115,7 +115,6 @@ def update_window_title(success_count, num_threads, success_per_second):
 def main():
     global success_count
     global success_per_second
-
     if use_proxies == 'no':
         while success_count < num_urls:
             generate_url(None)
