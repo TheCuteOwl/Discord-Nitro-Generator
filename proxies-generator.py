@@ -1,5 +1,3 @@
-# Don't skid silly
-
 import requests
 import threading
 import re
@@ -9,6 +7,12 @@ proxy_list_urls = [
     "https://api.proxyscrape.com/v2/?request=getproxies&protocol=http&timeout=10000&country=all&ssl=all&anonymity=all",
     "https://api.proxyscrape.com/v2/?request=getproxies&protocol=https&timeout=10000&country=all&ssl=all&anonymity=all",
     "https://raw.githubusercontent.com/TheSpeedX/PROXY-List/master/http.txt",
+    "https://raw.githubusercontent.com/themiralay/Proxy-List-World/master/data.txt",
+    "https://raw.githubusercontent.com/casals-ar/proxy-list/main/http",
+    "https://raw.githubusercontent.com/casals-ar/proxy-list/main/https",
+    "https://raw.githubusercontent.com/monosans/proxy-list/main/proxies/http.txt",
+    "https://raw.githubusercontent.com/prxchk/proxy-list/main/http.txt",
+    "https://raw.githubusercontent.com/elliottophellia/yakumo/master/results/http/global/http_checked.txt"
 ]
 
 def get_proxies(url, timeout=5):
@@ -149,6 +153,8 @@ def check_proxies_from_file(filename):
     remove_duplicates("proxies.txt")
 
 if __name__ == "__main__":
+    clear_file('proxies.txt')
     main()
+    
     remove_invalid_proxies("http.txt")
     check_proxies_from_file("http.txt")
