@@ -10,7 +10,7 @@ import signal
 from statistics import mean
 
 url = "https://api.discord.gx.games/v1/direct-fulfillment"
-num_urls = int(input('Star https://github.com/TheCuteOwl/Discord-Promo-Generator for making this script (If you skid, give credit ;)\nHow many nitros do you want to generate: '))
+num_urls = int(input('Star https://github.com/TheCuteOwl/Discord-Promo-Nitro-Generator for making this script (If you skid, give credit ;)\nHow many nitros do you want to generate: '))
 
 use_multiprocessing = input('Do you want to use multiprocessing? (yes/no): ').lower()
 while use_multiprocessing not in ['yes', 'no']:
@@ -142,7 +142,7 @@ def main():
 
         end_time = time.time()
         elapsed_time = end_time - start_time
-        print(f"All URLs generated and saved! Star https://github.com/TheCuteOwl/Discord-Promo-Generator for making this script")
+        print(f"All URLs generated and saved! Star https://github.com/TheCuteOwl/Discord-Promo-Nitro-Generator for making this script")
         
         input(f"Time taken: {elapsed_time:.2f} seconds")
 
