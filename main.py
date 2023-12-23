@@ -63,7 +63,7 @@ def generate_url(proxy):
 
         while success_count < num_urls and not stop_event.is_set():
             start_request_time = time.time()
-
+            
             try:
                 partner_user_id = str(uuid.uuid4())
                 response = requests.post(url, json={"partnerUserId": partner_user_id}, headers=headers, proxies={"http": proxy, "https": proxy}, timeout=5)
@@ -107,10 +107,10 @@ def update_window_title(success_count, num_threads, success_per_second):
     average_success_per_second = mean(success_per_second) if success_per_second else 0
     window_title = f"URLs Generated: {success_count} | Threads Launched: {num_threads} | Avg URLs/sec: {average_success_per_second:.2f}"
 
-    if os.name == 'posix':
-        subprocess.run(["printf", f"\033]0;{window_title}\007"])
-    elif os.name == 'nt':
+    if os.name == 'nt':
         windll.kernel32.SetConsoleTitleW(window_title)
+    else:
+        pass
 
 def main():
     global success_count
