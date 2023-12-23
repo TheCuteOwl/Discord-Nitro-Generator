@@ -37,7 +37,7 @@ This script automates the generation of Discord Nitro URLs by making requests to
 
 4. **Give credit:**
 
-   This script is based on the work of TheCuteOwl. Please give credit when using or modifying the script.
+   This script is based on the work of TheCuteOwl. Please give credit when using or modifying the script. That would be very kind of you, don't want to make a skid walls 
 
 ## Dependencies
 
