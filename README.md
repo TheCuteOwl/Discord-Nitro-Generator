@@ -1,4 +1,4 @@
-# Discord Nitro Generator
+# Discord Nitro Generator 
 
 ![GitHub forks](https://img.shields.io/github/forks/TheCuteOwl/Discord-Promo-Generator?style=flat-square)
 ![GitHub license](https://img.shields.io/github/license/TheCuteOwl/Discord-Promo-Generator?style=flat-square)
