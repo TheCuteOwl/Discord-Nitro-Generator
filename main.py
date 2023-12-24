@@ -9,6 +9,8 @@ from ctypes import windll
 import signal
 from statistics import mean
 
+start_time = time.time()
+
 url = "https://api.discord.gx.games/v1/direct-fulfillment"
 num_urls = int(input('Star https://github.com/TheCuteOwl/Discord-Promo-Nitro-Generator for making this script (If you skid, give credit ;)\nHow many nitros do you want to generate: '))
 
@@ -34,7 +36,6 @@ headers = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36 OPR/105.0.0.0"
 }
 
-start_time = time.time()
 
 def read_proxies():
     try:
