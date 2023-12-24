@@ -12,7 +12,8 @@ proxy_list_urls = [
     "https://raw.githubusercontent.com/casals-ar/proxy-list/main/https",
     "https://raw.githubusercontent.com/monosans/proxy-list/main/proxies/http.txt",
     "https://raw.githubusercontent.com/prxchk/proxy-list/main/http.txt",
-    "https://raw.githubusercontent.com/elliottophellia/yakumo/master/results/http/global/http_checked.txt"
+    "https://raw.githubusercontent.com/elliottophellia/yakumo/master/results/http/global/http_checked.txt",
+    "https://raw.githubusercontent.com/proxy4parsing/proxy-list/main/http.txt"
 ]
 
 def get_proxies(url, timeout=5):
