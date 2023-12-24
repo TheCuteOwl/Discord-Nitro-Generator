@@ -139,7 +139,6 @@ def main():
                 print("Script terminated by user.")
 
             stop_event.set()
-
         end_time = time.time()
         elapsed_time = end_time - start_time
         print(f"All URLs generated and saved! Star https://github.com/TheCuteOwl/Discord-Promo-Nitro-Generator for making this script")
