@@ -46,7 +46,7 @@ This script automates the generation of Discord Nitro URLs by making requests to
 
 Feel free to contribute to the development of this script. Fork the repository, make your changes, and submit a pull request.
 
-## Discord Support
+## Discord Support 
 
 If you need any help or want to report a bug, feel free to join our Discord server: [Discord Support](https://discord.gg/SKGjXfmFga)
 
