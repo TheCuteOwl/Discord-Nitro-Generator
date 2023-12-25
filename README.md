@@ -29,7 +29,7 @@ This script automates the generation of Discord Nitro URLs by making requests to
 
 3. **Run the script:**
 
-   ```bash
+   ```bash 
    python main.py
    ```
 
