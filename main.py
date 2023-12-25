@@ -6,7 +6,7 @@ import random
 import threading
 import subprocess
 from ctypes import windll
-from queue import Queue
+from queue import Queue 
 
 url = "https://api.discord.gx.games/v1/direct-fulfillment"
 num_urls = int(input('Star https://github.com/TheCuteOwl/Discord-Nitro-Generator for making this script (If you skid, give credit ;)\nHow many nitros do you want to generate: '))
