@@ -74,6 +74,7 @@ def generate_url(proxy):
                         pass
 
                 urls = 'https://discord.com/billing/partner-promotions/1180231712274387115/'
+                
                 with open(output_file_path, "a") as file:
                     file.write(f"{urls}{token}\n")
                     success_count += 1
