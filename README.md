@@ -15,7 +15,7 @@ This script automates the generation of Discord Nitro URLs by making requests to
 
 ## HTTP/S PROXY SUPPORT! + proxies scrapper and checker (Of 9 differents sources more coming soon) 
 ## Usage
- 
+  
 1. **Clone the repository:**
    ```bash          
    git clone https://github.com/TheCuteOwl/Discord-Nitro-Generator.git 
