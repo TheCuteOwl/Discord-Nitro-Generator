@@ -20,7 +20,7 @@ This script automates the generation of Discord Nitro URLs by making requests to
    ```bash          
    git clone https://github.com/TheCuteOwl/Discord-Nitro-Generator.git 
    cd Discord-Nitro-Generator-main 
-   ```
+   ``` 
 
 2. **Install dependencies:**
    ```bash
