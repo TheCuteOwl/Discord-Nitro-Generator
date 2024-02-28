@@ -8,26 +8,16 @@ import subprocess
 from ctypes import windll
 from queue import Queue 
 
-url = "https://api.discord.gx.games/v1/direct-fulfillment"
+url = "https://api.gx.me/profile/token"
 num_urls = int(input('Star https://github.com/TheCuteOwl/Discord-Nitro-Generator for making this script (If you skid, give credit ;)\nHow many nitros do you want to generate: '))
 
+
+Session_ID = input('Enter account session ID (Check on https://github.com/TheCuteOwl/Discord-Nitro-Generator for more info )')
 use_proxies = input('Do you want to use proxies? (yes/no): ').lower()
 while use_proxies not in ['yes', 'no']:
     use_proxies = input('Error! Do you want to use proxies? (yes/no): ').lower()
 
-headers = {
-    "Content-Type": "application/json",
-    "Accept": "*/*",
-    "Origin": "https://www.opera.com",
-    "Referer": "https://www.opera.com/",
-    "Sec-Ch-Ua": '"Opera GX";v="105", "Chromium";v="119", "Not?A_Brand";v="24"',
-    "Sec-Ch-Ua-Mobile": "?0",
-    "Sec-Ch-Ua-Platform": '"Windows"',
-    "Sec-Fetch-Dest": "empty",
-    "Sec-Fetch-Mode": "cors",
-    "Sec-Fetch-Site": "cross-site",
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36 OPR/105.0.0.0"
-}
+
 
 start_time = time.time()
 
@@ -61,12 +51,44 @@ def generate_url(proxy):
             start_request_time = time.time()
 
             try:
-                partner_user_id = str(uuid.uuid4())
-                response = requests.post(url, json={"partnerUserId": partner_user_id}, headers=headers, proxies={"http": proxy, "https": proxy}, timeout=7)
-                response.raise_for_status()
-                data = response.json()
-                token = data["token"]
-
+                
+                headers = {
+                    'Accept': 'application/json',
+                    'Accept-Encoding': 'gzip, deflate, br',
+                    'Accept-Language': 'fr-FR,fr;q=0.9,en-US;q=0.8,en;q=0.7',
+                    'Cookie': f'SESSION_TYPE=user; SESSION={Session_ID}',
+                    'Origin': 'https://www.opera.com',
+                    'Referer': 'https://www.opera.com/',
+                    'Sec-Ch-Ua': '"Not A(Brand";v="99", "Opera GX";v="107", "Chromium";v="121"',
+                    'Sec-Ch-Ua-Mobile': '?0',
+                    'Sec-Ch-Ua-Platform': '"Windows"',
+                    'Sec-Fetch-Dest': 'empty',
+                    'Sec-Fetch-Mode': 'cors',
+                    'Sec-Fetch-Site': 'cross-site',
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36 OPR/107.0.0.0'
+                }
+                                
+                response = requests.get('https://api.gx.me/profile/token', headers=headers)
+                datas = response.json() 
+                
+                headers = {
+                    "Content-Type": "application/json",
+                    "Accept": "*/*",
+                    "Origin": "https://www.opera.com",
+                    "Referer": "https://www.opera.com/",
+                    "Sec-Ch-Ua": '"Opera GX";v="105", "Chromium";v="119", "Not?A_Brand";v="24"',
+                    "Sec-Ch-Ua-Mobile": "?0",
+                    "Sec-Ch-Ua-Platform": '"Windows"',
+                    "Sec-Fetch-Dest": "empty",
+                    "Sec-Fetch-Mode": "cors",
+                    "Sec-Fetch-Site": "cross-site",
+                    "Authorization": f"{datas['data']}",
+                    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36 OPR/105.0.0.0"
+                }
+                r = requests.post('https://discord.opr.gg/v2/direct-fulfillment', headers=headers)
+                data = r.json()
+                
+                
                 output_file_path = "output.txt"
 
                 if not os.path.exists(output_file_path):
@@ -76,7 +98,7 @@ def generate_url(proxy):
                 urls = 'https://discord.com/billing/partner-promotions/1180231712274387115/'
                 
                 with open(output_file_path, "a") as file:
-                    file.write(f"{urls}{token}\n")
+                    file.write(f"{urls}{data['token']}\n")
                     success_count += 1
                     print(f"URL generated and saved to {output_file_path}")
                     update_window_title(success_count, len(proxies))
@@ -94,7 +116,8 @@ def generate_url(proxy):
                     except:
                         pass
                     update_window_title(success_count, len(proxies))
-
+            except Exception as e:
+                print(e)
             end_request_time = time.time()
             request_time = end_request_time - start_request_time
 
