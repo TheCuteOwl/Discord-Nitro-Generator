@@ -5,7 +5,9 @@
 
 ## Happy New Year
 
-# HOW TO GET SESSION ID
+## They changed the API recently so here a fix!
+
+## HOW TO GET SESSION ID
 
 1. Go to https://www.opera.com/gx/discord-nitro on OperaGX browser
 2. Create an account
